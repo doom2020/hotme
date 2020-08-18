@@ -14,34 +14,35 @@
         padding: 0;
     }
 </style>
-<body>
+<body style="background-color: #F0F0F0">
     <div id="icon" style="text-align: center;margin-top: 20px">
         <img src="../static/img/flag.jpg" style="width: 48px;height: 48px;">
     </div>
     <div id="meaning" style="text-align: center;margin-top: 5px;margin-bottom: 10px">
         <span><strong>hot me</strong></span>
     </div>
-    <div id="loginDiv" style="width: 400px;height: 400px;background-color: #F0F0F0;margin: 0 auto;border-radius: 6px">
+    <div id="loginDiv" style="width: 400px;height: 400px;background-color: #E8CCFF;margin: 0 auto;border-radius: 6px">
         <form style="padding-top: 15px;">
-            <div class="form-group has-success has-feedback">
+            <div class="form-group has-success has-feedback" id="accountDiv">
                 <label class="control-label" for="account">Account</label>
                 <input type="text" class="form-control" id="account">
-                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <span class="glyphicon glyphicon-user form-control-feedback" style="color: #FF3333"></span>
             </div>
-            <div class="form-group has-success has-feedback">
+            <div class="form-group has-success has-feedback" id="passwordDiv">
                 <label class="control-label" for="account">Password</label>
-                <input type="text" class="form-control" id="upwd">
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <input type="password" class="form-control" id="upwd">
+                <span class="glyphicon glyphicon-lock form-control-feedback" style="color: #FF3333"></span>
             </div>
-            <div style="margin-top: 60px;">
+            <div style="margin-top: 60px;" id="btnDiv">
                 <button type="button" class="btn btn-success" style="width: 400px">Login</button>
             </div>
         </form>
-        <div id="toRegister" style="text-align: right;margin-top: 15px;">
-            <a href="#" style="margin-right: 20px">还未注册?</a>
+        <div id="toRegisterDiv" style="margin-top: 20px;">
+            <a href="/forget_password/" style="padding-left: 30px;">忘记密码?</a>
+            <a href="/register/" style="padding-left: 200px">还未注册?</a>
         </div>
-        <div id="errInfo" style="text-align: center;margin-top: 30px;">
-            <h3>account or password is not correct</h3>
+        <div id="errInfoDiv" style="text-align: center;margin-top: 30px;">
+            <h3 style="color: #FF3333;">account or password is not correct</h3>
         </div>
     </div>
 </body>

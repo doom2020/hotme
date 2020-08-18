@@ -50,7 +50,7 @@ class IndexHandler(tornado.web.RequestHandler):
         print('this is a prepare')
 
     def get(self, *args, **kwargs):
-        self.write('这是首页get请求')
+        self.render('index.html')
 
     def post(self, *args, **kwargs):
         self.write('首页post请求')
@@ -88,11 +88,12 @@ class LoginHandler(tornado.web.RequestHandler):
         print('this is a prepare')
 
     def get(self, *args, **kwargs):
-        name = self.get_argument('name')
-        print(name)
-        name2 = self.get_query_argument('name')
-        print(name2)
-        self.write('登录get请求')
+        # name = self.get_argument('name')
+        # print(name)
+        # name2 = self.get_query_argument('name')
+        # print(name2)
+        # self.write('登录get请求')
+        return self.render('login.html')
 
     def post(self, *args, **kwargs):
         self.write('登录post请求')
@@ -121,7 +122,36 @@ class RegisterHandler(tornado.web.RequestHandler):
         print('this is a prepare')
 
     def get(self, *args, **kwargs):
-        self.write('注册get请求')
+        self.render('register.html')
+
+    def post(self, *args, **kwargs):
+        self.write('注册post请求')
+
+    def on_finish(self):
+        if self.conn:
+            self.conn.close()
+        print('on finish')
+
+class ForgetPasswordHandler(tornado.web.RequestHandler):
+
+    def initialize(self):
+        """
+        当使用原生sql
+        :return:
+        """
+        self.conn, self.cursor = None, None
+        try:
+            self.conn = pymysql.connect(host='127.0.0.1', password='123456', database='hotme', user='root', port=3306)
+            self.cursor = self.conn.cursor()
+        except Exception as e:
+            print(e)
+        print('this is initialize')
+
+    def prepare(self):
+        print('this is a prepare')
+
+    def get(self, *args, **kwargs):
+        self.render('forget_password.html')
 
     def post(self, *args, **kwargs):
         self.write('注册post请求')
