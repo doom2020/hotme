@@ -6,12 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>register</title>
     <script src="../static/js/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
 </head>
 <style>
     * {
         margin: 0;
         padding: 0;
+    }
+    [v-cloak]{
+        display: none !important;
     }
 </style>
 <body style="background-color: #F0F0F0">
@@ -23,87 +27,234 @@
     </div>
     <div id="loginDiv" style="width: 600px;height: 400px;background-color: #E6E6FA;margin: 0 auto;border-radius: 6px">
         <form style="padding-top: 15px;" class="form-horizontal">
-            <div class="form-group has-success has-feedback" id="accountDiv">
+            <div class="form-group has-success has-feedback">
                 <label class="control-label col-sm-2" for="account">用户账号</label>
                 <div class="col-sm-8">
                     <input type="text" v-on:blur="check_account" v-model='account' class="form-control" id="account" placeholder="输入昵称">
-                    <span v-bind:class='nor_class' class="form-control-feedback" v-bind:style="nor_style"></span>
+                    <span v-bind:class='nor_class_account' class="form-control-feedback" v-bind:style="nor_style_account"></span>
                 </div>
                 <div class="col-sm-2" style="height: 34px;line-height: 35px;">
-                    <span v-bind:style="nor_style" v-cloak>{{ account_err_msg }}</span>
+                    <span v-bind:style="nor_style_account" v-cloak>${ account_err_msg }</span>
                 </div>
             </div>
-            <div class="form-group has-success has-feedback" id="phoneDiv">
+            <div class="form-group has-success has-feedback">
                 <label class="control-label col-sm-2" for="phone">用户手机</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="phone" placeholder="输入手机号">
-                    <span class="glyphicon glyphicon-earphone form-control-feedback" style="color: #FF3333"></span>
+                    <input type="text" v-on:blur="check_phone" v-model="phone" class="form-control" id="phone" placeholder="输入手机号">
+                    <span v-bind:class="nor_class_phone" class="form-control-feedback" v-bind:style="nor_style_phone"></span>
                 </div>
                 <div class="col-sm-2" style="height: 34px;line-height: 35px;">
-                    <span>信息不提示</span>
+                    <span v-bind:style="nor_style_phone" v-cloak>${ phone_err_msg }</span>
                 </div>
             </div>
-            <div class="form-group has-success has-feedback" id="upwdDiv">
+            <div class="form-group has-success has-feedback">
                 <label class="control-label col-sm-2" for="upwd">用户密码</label>
                 <div class="col-sm-8">
-                    <input type="password" class="form-control" id="upwd" placeholder="输人密码">
-                    <span class="glyphicon glyphicon-lock form-control-feedback" style="color: #FF3333"></span>
+                    <input type="password" v-on:blur="check_upwd" v-model="upwd" class="form-control" id="upwd" placeholder="输人密码">
+                    <span v-bind:class="nor_class_upwd" class="form-control-feedback" v-bind:style="nor_style_upwd"></span>
                 </div>
                 <div class="col-sm-2" style="height: 34px;line-height: 35px;">
-                    <span>信息不提示</span>
+                    <span v-bind:style="nor_style_upwd" v-cloak>${ upwd_err_msg }</span>
                 </div>
             </div>
-            <div class="form-group has-success has-feedback" id="cpwdDiv">
+            <div class="form-group has-success has-feedback">
                 <label class="control-label col-sm-2" for="cpwd">确认密码</label>
                 <div class="col-sm-8">
-                    <input type="password" class="form-control" id="cpwd" placeholder="确认密码">
-                    <span class="glyphicon glyphicon-lock form-control-feedback" style="color: #FF3333"></span>
+                    <input type="password" v-on:blur="check_cpwd" v-model="cpwd" class="form-control" id="cpwd" placeholder="确认密码">
+                    <span v-bind:class="nor_class_cpwd" class="form-control-feedback" v-bind:style="nor_style_cpwd"></span>
                 </div>
                 <div class="col-sm-2" style="height: 34px;line-height: 35px;">
-                    <span>信息不提示</span>
+                    <span v-bind:style="nor_style_upwd" v-cloak>${ cpwd_err_msg }</span>
                 </div>
             </div>
             <div style="margin-top: 60px;text-align: center" id="btnDiv">
-                <button type="button" class="btn btn-success" style="width: 400px">Register</button>
+                <button v-on:click="btnRegister" type="button" class="btn btn-success" style="width: 400px">Register</button>
             </div>
         </form>
         <div id="toLoginDiv" style="margin-top: 20px;text-align: right;">
             <a href="/login/" style="padding-right: 100px">已有账号?</a>
         </div>
         <div id="errInfoDiv" style="text-align: center;margin-top: 30px;">
-            <h3 style="color: #FF3333;">register fail</h3>
+            <h3 v-bind:style="nor_style_register" v-cloak>${ register_err_msg }</h3>
         </div>
     </div>
 </body>
     <script>
         const account_vm = new Vue({
-            el: "#accountDiv",
+            el: "#loginDiv",
+            delimiters: ['${', '}'],
             data: {
+                // 用户
                 account: '',
-                nor_class: 'glyphicon glyphicon glyphicon-user',
-                nor_style: {},
+                nor_class_account: 'glyphicon glyphicon glyphicon-user',
+                nor_style_account: {},
                 account_err_msg: '',
-
+                flag_account: false,
+                // 手机
+                phone: '',
+                nor_class_phone: 'glyphicon glyphicon-earphone',
+                nor_style_phone: {},
+                phone_err_msg: '',
+                flag_phone: false,
+                // 密码
+                upwd: '',
+                nor_class_upwd: 'glyphicon glyphicon-lock',
+                nor_style_upwd: {},
+                upwd_err_msg: '',
+                flag_upwd: false,
+                // 确认密码
+                cpwd: '',
+                nor_class_cpwd: 'glyphicon glyphicon-lock',
+                nor_style_cpwd: {},
+                cpwd_err_msg: '',
+                flag_cpwd: '',
+                // 注册
+                nor_style_register: {},
+                register_err_msg: '',
             },
             methods: {
                 check_account(){
                     if (!this.account){
-                        this.nor_class = 'glyphicon glyphicon-remove';
-                        this.nor_style = {color: '#FF3333'};
+                        this.nor_class_account = 'glyphicon glyphicon-remove';
+                        this.nor_style_account = {color: '#FF3333'};
                         this.account_err_msg = '账号不能空';
+                        this.flag_account = false;
                     }
-                    else if(this.account.length < 2 || this.account.length > 5){
-                        this.nor_class = 'glyphicon glyphicon-remove';
-                        this.nor_style = {color: '#FF3333'};
+                    else if (this.account.length < 2 || this.account.length > 5){
+                        this.nor_class_account = 'glyphicon glyphicon-remove';
+                        this.nor_style_account = {color: '#FF3333'};
                         this.account_err_msg = '账号不合法';
+                        this.flag_account = false;
                     }
                     else {
-                        // 这里要进行ajax请求进行验证
-                        this.nor_class = 'glyphicon glyphicon-ok';
-                        this.nor_style = {};
-                        this.account_err_msg = '验证合法';
+                        // 这里要进行ajax请求进行验证(用户账号要唯一确认)
+                        axios.post('/register/', {"post_type": "check_account", "account": this.account})
+                            .then(function (response) {
+                                const ret = response.data.ret;
+                                const info = response.data.data;
+                                if (!ret){
+                                    this.nor_class_account = 'glyphicon glyphicon-ok';
+                                    this.nor_style_account = {};
+                                    this.account_err_msg = '验证合法';
+                                    this.flag_account = true;
+                                }
+                                else {
+                                    this.nor_class_account = 'glyphicon glyphicon-remove';
+                                    this.nor_style_account = {color: '#FF3333'};
+                                    this.account_err_msg = '用户名存在';
+                                    this.flag_account = false;
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     }
-                }
+                },
+                check_phone(){
+                    if (!this.phone){
+                        this.nor_class_phone = 'glyphicon glyphicon-remove';
+                        this.nor_style_phone = {color: '#FF3333'};
+                        this.phone_err_msg = '号码不能空';
+                        this.flag_phone = false;
+                    }
+                    else if (this.phone.length != 11){
+                        this.nor_class_phone = 'glyphicon glyphicon-remove';
+                        this.nor_style_phone = {color: '#FF3333'};
+                        this.phone_err_msg = '号码不合法';
+                        this.flag_phone = false;
+                    }
+                    else {
+                        // 这里要ajax请求验证(手机号码唯一确认)
+                        axios.post('/register/', {"post_type": "check_phone", "phone": this.phone})
+                            .then(function (response) {
+                                const ret = response.data.ret;
+                                const info = response.data.data;
+                                if (!ret){
+                                    this.nor_class_phone = 'glyphicon glyphicon-ok';
+                                    this.nor_style_phone = {};
+                                    this.phone_err_msg = '验证合法';
+                                    this.flag_phone = true;
+                                }
+                                else {
+                                    this.nor_class_phone = 'glyphicon glyphicon-remove';
+                                    this.nor_style_phone = {color: '#FF3333'};
+                                    this.phone_err_msg = '号码已存在';
+                                    this.flag_phone = false;
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }
+                },
+                check_upwd(){
+                    if (!this.upwd){
+                        this.nor_class_upwd = 'glyphicon glyphicon-remove';
+                        this.nor_style_upwd = {color: '#FF3333'};
+                        this.upwd_err_msg = '密码不能空';
+                        this.flag_upwd = false;
+                    }
+                    else if (this.upwd.length < 8 || this.upwd.length > 16){
+                        this.nor_class_upwd = 'glyphicon glyphicon-remove';
+                        this.nor_style_upwd = {color: '#FF3333'};
+                        this.upwd_err_msg = '密码不合法';
+                        this.flag_upwd = false;
+                    }
+                    else {
+                        this.nor_class_upwd = 'glyphicon glyphicon-ok';
+                        this.nor_style_upwd = {};
+                        this.upwd_err_msg = '验证合法';
+                        this.flag_upwd = true;
+                    }
+                },
+                check_cpwd(){
+                    if (!this.upwd){
+                        this.nor_class_cpwd = 'glyphicon glyphicon-remove';
+                        this.nor_style_cpwd = {color: '#FF3333'};
+                        this.cpwd_err_msg = '密码不能空';
+                        this.flag_cpwd = false;
+                    }
+                    else if (this.cpwd.length < 8 || this.cpwd.length > 16){
+                        this.nor_class_cpwd = 'glyphicon glyphicon-remove';
+                        this.nor_style_cpwd = {color: '#FF3333'};
+                        this.cpwd_err_msg = '密码不合法';
+                        this.flag_cpwd = false;
+                    }
+                    else if (this.upwd != this.cpwd){
+                        this.nor_class_cpwd = 'glyphicon glyphicon-remove';
+                        this.nor_style_cpwd = {color: '#FF3333'};
+                        this.cpwd_err_msg = '输入不一致';
+                        this.flag_cpwd = false;
+                    }
+                    else {
+                        this.nor_class_cpwd = 'glyphicon glyphicon-ok';
+                        this.nor_style_cpwd = {};
+                        this.cpwd_err_msg = '验证合法';
+                        this.flag_cpwd = true;
+                    }
+                },
+                btnRegister(){
+                    if (this.flag_account && this.flag_phone && this.flag_upwd && this.flag_cpwd){
+                        // 进行ajax请求注册
+                        axios.post('/register/', {"post_type": 'register', "account": this.account, "phone": this.phone,
+                        "upwd": this.upwd, "cpwd": this.cpwd})
+                            .then(function (response) {
+                                const ret = response.data.ret;
+                                const info = response.data.data;
+                                if (!ret){
+                                    this.nor_style_register = {};
+                                    this.register_err_msg = '';
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }
+                    else {
+                        this.nor_style_register = {color: '#FF3333'};
+                        this.register_err_msg = 'register fail';
+                    }
+                },
             }
         })
     </script>

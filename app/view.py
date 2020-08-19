@@ -125,6 +125,7 @@ class RegisterHandler(tornado.web.RequestHandler):
         self.render('register.html')
 
     def post(self, *args, **kwargs):
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         self.write('注册post请求')
 
     def on_finish(self):
