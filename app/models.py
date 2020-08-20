@@ -8,5 +8,6 @@ class UserInfo(Base):
     name = Column(String(20), unique=True, nullable=True)
     phone = Column(String(15), unique=True, nullable=True)
     password = Column(String(50), nullable=True)
+    is_delete = Column(Integer, nullable=True, default=0)
 
     __tablename__ = 'user_info'

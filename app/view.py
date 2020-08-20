@@ -1,6 +1,11 @@
+import hashlib
+import json
+
 import tornado.web
 import pymysql
-from utils.conn import Base
+from tornado.escape import json_decode
+
+from utils.conn import Base, session
 from app.models import *
 
 
@@ -118,20 +123,76 @@ class RegisterHandler(tornado.web.RequestHandler):
             print(e)
         print('this is initialize')
 
+    @staticmethod
+    def md5(the_str):
+        return hashlib.md5(the_str.encode('utf8')).hexdigest()
+
     def prepare(self):
+        # if self.request.headers['Content-Type'] == 'application/json':
+        #     self.args = json_decode(self.request.body)
+        # data_type = self.request.headers.get("Content-Type")
+        # if "application/json" in data_type:
+        #     json_data = json.loads(self.request.body)
+        #     # print('222222222222222222222')
+        #     # print(aa)
+        #     # print(self.kwargs)
+        # print(data_type)
+        # print(json_data)
+        # self.kwargs = json.loads(self.request.body)
         print('this is a prepare')
 
     def get(self, *args, **kwargs):
         self.render('register.html')
 
     def post(self, *args, **kwargs):
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        self.write('注册post请求')
+        json_data = json.loads(self.request.body)
+        post_type = json_data['post_type']
+        print(post_type)
+        handle = None
+        if hasattr(RegisterHandler, post_type):
+            handle = getattr(RegisterHandler, post_type)
+        if handle:
+            ret_dict = handle(json_data)
+        print(ret_dict)
+        self.write(ret_dict)
 
     def on_finish(self):
         if self.conn:
             self.conn.close()
         print('on finish')
+
+    @staticmethod
+    def check_account(json_data):
+        ret_dict = {'ret': 0, 'data': ''}
+        account = json_data['account']
+        user_info_objs = session.query(UserInfo).filter(UserInfo.name == account, UserInfo.is_delete == 0).all()
+        if user_info_objs:
+            ret_dict['ret'] = 1
+        return ret_dict
+
+    @staticmethod
+    def check_phone(json_data):
+        ret_dict = {'ret': 0, 'data': ''}
+        phone = json_data['phone']
+        user_info_objs = session.query(UserInfo).filter(UserInfo.phone == phone, UserInfo.is_delete == 0).all()
+        if user_info_objs:
+            ret_dict['ret'] = 1
+        return ret_dict
+
+    @staticmethod
+    def register(json_data):
+        ret_dict = {'ret': 0, 'data': ''}
+        account = json_data['account']
+        phone = json_data['phone']
+        upwd = json_data['upwd']
+        cpwd = json_data['cpwd']
+        secret_upwd = RegisterHandler.md5(upwd)
+        user_info_obj = UserInfo(name=account, phone=phone, password=secret_upwd, is_delete=0)
+        session.add(user_info_obj)
+        session.commit()
+        return ret_dict
+
+
 
 class ForgetPasswordHandler(tornado.web.RequestHandler):
 
@@ -158,6 +219,7 @@ class ForgetPasswordHandler(tornado.web.RequestHandler):
         self.write('注册post请求')
 
     def on_finish(self):
+        session.close()
         if self.conn:
             self.conn.close()
         print('on finish')

@@ -128,21 +128,23 @@
                     }
                     else {
                         // 这里要进行ajax请求进行验证(用户账号要唯一确认)
+                        const _this = this;
                         axios.post('/register/', {"post_type": "check_account", "account": this.account})
                             .then(function (response) {
                                 const ret = response.data.ret;
+                                console.log(ret);
                                 const info = response.data.data;
                                 if (!ret){
-                                    this.nor_class_account = 'glyphicon glyphicon-ok';
-                                    this.nor_style_account = {};
-                                    this.account_err_msg = '验证合法';
-                                    this.flag_account = true;
+                                    _this.nor_class_account = 'glyphicon glyphicon-ok';
+                                    _this.nor_style_account = {};
+                                    _this.account_err_msg = '验证合法';
+                                    _this.flag_account = true;
                                 }
                                 else {
-                                    this.nor_class_account = 'glyphicon glyphicon-remove';
-                                    this.nor_style_account = {color: '#FF3333'};
-                                    this.account_err_msg = '用户名存在';
-                                    this.flag_account = false;
+                                    _this.nor_class_account = 'glyphicon glyphicon-remove';
+                                    _this.nor_style_account = {color: '#FF3333'};
+                                    _this.account_err_msg = '用户名存在';
+                                    _this.flag_account = false;
                                 }
                             })
                             .catch(function (error) {
@@ -165,21 +167,22 @@
                     }
                     else {
                         // 这里要ajax请求验证(手机号码唯一确认)
+                        const _this = this;
                         axios.post('/register/', {"post_type": "check_phone", "phone": this.phone})
                             .then(function (response) {
                                 const ret = response.data.ret;
                                 const info = response.data.data;
                                 if (!ret){
-                                    this.nor_class_phone = 'glyphicon glyphicon-ok';
-                                    this.nor_style_phone = {};
-                                    this.phone_err_msg = '验证合法';
-                                    this.flag_phone = true;
+                                    _this.nor_class_phone = 'glyphicon glyphicon-ok';
+                                    _this.nor_style_phone = {};
+                                    _this.phone_err_msg = '验证合法';
+                                    _this.flag_phone = true;
                                 }
                                 else {
-                                    this.nor_class_phone = 'glyphicon glyphicon-remove';
-                                    this.nor_style_phone = {color: '#FF3333'};
-                                    this.phone_err_msg = '号码已存在';
-                                    this.flag_phone = false;
+                                    _this.nor_class_phone = 'glyphicon glyphicon-remove';
+                                    _this.nor_style_phone = {color: '#FF3333'};
+                                    _this.phone_err_msg = '号码已存在';
+                                    _this.flag_phone = false;
                                 }
                             })
                             .catch(function (error) {
@@ -236,14 +239,16 @@
                 btnRegister(){
                     if (this.flag_account && this.flag_phone && this.flag_upwd && this.flag_cpwd){
                         // 进行ajax请求注册
-                        axios.post('/register/', {"post_type": 'register', "account": this.account, "phone": this.phone,
-                        "upwd": this.upwd, "cpwd": this.cpwd})
+                        const _this = this;
+                        axios.post('/register/', {"post_type": 'register', "account": _this.account, "phone": _this.phone,
+                        "upwd": _this.upwd, "cpwd": _this.cpwd})
                             .then(function (response) {
                                 const ret = response.data.ret;
                                 const info = response.data.data;
                                 if (!ret){
-                                    this.nor_style_register = {};
-                                    this.register_err_msg = '';
+                                    _this.nor_style_register = {};
+                                    _this.register_err_msg = '';
+                                    window.location.href = "/";
                                 }
                             })
                             .catch(function (error) {
