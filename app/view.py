@@ -7,6 +7,7 @@ from tornado.escape import json_decode
 
 from utils.conn import Base, session
 from app.models import *
+from app.action import LoginOperation
 
 
 class ConnectMysql(tornado.web.RequestHandler):
@@ -101,7 +102,11 @@ class LoginHandler(tornado.web.RequestHandler):
         return self.render('login.html')
 
     def post(self, *args, **kwargs):
-        self.write('登录post请求')
+        # print(json.loads(self.request.body))
+        print("post 请求")
+        login_operation = LoginOperation(self)
+        op_handle = login_operation.get_handler()
+        # self.write('登录post请求')
 
     def on_finish(self):
         if self.conn:
