@@ -2,8 +2,9 @@ import os
 import tornado.web
 import tornado.ioloop
 from tornado.options import define, options
-from app.view import IndexHandler, LoginHandler, RegisterHandler, CreateTableHandler, DeleteTableHandler, \
-    ForgetPasswordHandler
+from app.login.view import LoginHandler
+from app.register.view import RegisterHandler
+from app.main.view import IndexHandler, CreateTableHandler, DeleteTableHandler, ForgetPasswordHandler
 
 DEBUG = True
 

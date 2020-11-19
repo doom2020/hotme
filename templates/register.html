@@ -22,7 +22,7 @@
     <div id="icon" style="text-align: center;margin-top: 20px">
         <img src="../static/img/flag.jpg" style="width: 48px;height: 48px;">
     </div>
-    <div id="meaning" style="text-align: center;margin-top: 5px;margin-bottom: 10px">
+    <div style="text-align: center;margin-top: 5px;margin-bottom: 10px">
         <span><strong>hot me</strong></span>
     </div>
     <div id="RegisterDiv" style="width: 600px;height: 400px;background-color: #E6E6FA;margin: 0 auto;border-radius: 6px">
@@ -30,7 +30,7 @@
             <div class="form-group has-success has-feedback">
                 <label class="control-label col-sm-2" for="account">用户账号</label>
                 <div class="col-sm-8">
-                    <input type="text" v-on:blur="check_account" v-model='account' class="form-control" id="account" placeholder="输入昵称">
+                    <input type="text" v-on:blur="check_account" v-model='account' class="form-control" placeholder="输入昵称">
                     <span v-bind:class='nor_class_account' class="form-control-feedback" v-bind:style="nor_style_account"></span>
                 </div>
                 <div class="col-sm-2" style="height: 34px;line-height: 35px;">
@@ -40,7 +40,7 @@
             <div class="form-group has-success has-feedback">
                 <label class="control-label col-sm-2" for="phone">用户手机</label>
                 <div class="col-sm-8">
-                    <input type="text" v-on:blur="check_phone" v-model="phone" class="form-control" id="phone" placeholder="输入手机号">
+                    <input type="text" v-on:blur="check_phone" v-model="phone" class="form-control" placeholder="输入手机号">
                     <span v-bind:class="nor_class_phone" class="form-control-feedback" v-bind:style="nor_style_phone"></span>
                 </div>
                 <div class="col-sm-2" style="height: 34px;line-height: 35px;">
@@ -50,7 +50,7 @@
             <div class="form-group has-success has-feedback">
                 <label class="control-label col-sm-2" for="upwd">用户密码</label>
                 <div class="col-sm-8">
-                    <input type="password" v-on:blur="check_upwd" v-model="upwd" class="form-control" id="upwd" placeholder="输人密码">
+                    <input type="password" v-on:blur="check_upwd" v-model="upwd" class="form-control" placeholder="输人密码">
                     <span v-bind:class="nor_class_upwd" class="form-control-feedback" v-bind:style="nor_style_upwd"></span>
                 </div>
                 <div class="col-sm-2" style="height: 34px;line-height: 35px;">
@@ -60,21 +60,21 @@
             <div class="form-group has-success has-feedback">
                 <label class="control-label col-sm-2" for="cpwd">确认密码</label>
                 <div class="col-sm-8">
-                    <input type="password" v-on:blur="check_cpwd" v-model="cpwd" class="form-control" id="cpwd" placeholder="确认密码">
+                    <input type="password" v-on:blur="check_cpwd" v-model="cpwd" class="form-control" placeholder="确认密码">
                     <span v-bind:class="nor_class_cpwd" class="form-control-feedback" v-bind:style="nor_style_cpwd"></span>
                 </div>
                 <div class="col-sm-2" style="height: 34px;line-height: 35px;">
                     <span v-bind:style="nor_style_upwd" v-cloak>${ cpwd_err_msg }</span>
                 </div>
             </div>
-            <div style="margin-top: 60px;text-align: center" id="btnDiv">
+            <div style="margin-top: 60px;text-align: center">
                 <button v-on:click="btnRegister" type="button" class="btn btn-success" style="width: 400px">Register</button>
             </div>
         </form>
-        <div id="toLoginDiv" style="margin-top: 20px;text-align: right;">
+        <div style="margin-top: 20px;text-align: right;">
             <a href="/login/" style="padding-right: 100px">已有账号?</a>
         </div>
-        <div id="errInfoDiv" style="text-align: center;margin-top: 30px;">
+        <div style="text-align: center;margin-top: 30px;">
             <h3 v-bind:style="nor_style_register" v-cloak>${ register_err_msg }</h3>
         </div>
     </div>
