@@ -30,7 +30,7 @@
             <div class="form-group has-success has-feedback">
                 <label class="control-label col-sm-2" for="account">用户账号</label>
                 <div class="col-sm-8">
-                    <input type="text" v-on:blur="check_account" v-model='account' class="form-control" placeholder="输入昵称">
+                    <input type="text" v-on:blur="check_account" v-model='account' ref="accountInput" class="form-control" placeholder="输入昵称">
                     <span v-bind:class='nor_class_account' class="form-control-feedback" v-bind:style="nor_style_account"></span>
                 </div>
                 <div class="col-sm-2" style="height: 34px;line-height: 35px;">
@@ -83,6 +83,10 @@
         const register_vm = new Vue({
             el: "#RegisterDiv",
             delimiters: ['${', '}'],
+            mounted() {
+                this.$refs.accountInput.focus()
+                window.addEventListener('keydown', this.keyDown)
+            },
             data: {
                 // 用户
                 account: '',
@@ -113,6 +117,11 @@
                 register_err_msg: '',
             },
             methods: {
+                keyDown(e) {
+                    if(e.keyCode === 13) {
+                        this.btnRegister()
+                    }
+                },
                 check_account(){
                     if (!this.account){
                         this.nor_class_account = 'glyphicon glyphicon-remove';

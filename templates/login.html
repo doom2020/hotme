@@ -26,12 +26,12 @@
         <form style="padding-top: 15px;">
             <div class="form-group has-success has-feedback">
                 <label class="control-label" for="account">Account</label>
-                <input v-model="account" @blur="checkAccount" type="text" class="form-control" placeholder="请输入用户名">
+                <input v-model="infoForm.account" @blur="checkAccount" ref="accountInput" type="text" class="form-control" placeholder="请输入用户名">
                 <span class="glyphicon glyphicon-user form-control-feedback" :style="accountInvalidStyle"></span>
             </div>
             <div class="form-group has-success has-feedback">
                 <label class="control-label" for="account">Password</label>
-                <input v-model="password" @blur="checkPassword" type="password" class="form-control" placeholder="请输入用户密码">
+                <input v-model="infoForm.password" @blur="checkPassword" type="password" class="form-control" placeholder="请输入用户密码">
                 <span class="glyphicon glyphicon-lock form-control-feedback" :style="passwordInvalidStyle"></span>
             </div>
             <div style="margin-top: 60px;">
@@ -52,59 +52,65 @@
             el: '#loginDiv',
             delimiters: ['${', '}'],
             mounted() {
+                this.$refs['accountInput'].focus()
+                window.addEventListener('keydown', this.keyDown)
             },
             data() {
                 return {
                     show: false,
                     errMsg: 'account or password is not correct',
                     // 用户
-                    account: '',
+                    infoForm: {account: '', password: ''},
                     accountInvalidStyle: {color: '#FF3333'},
-                    password: '',
                     passwordInvalidStyle: {color: '#FF3333'},
                     loginDisabled: false,
                 }
             },
             methods: {
+                keyDown(e) {
+                    if(e.keyCode == 13) {
+                        this.login()
+                    }
+                },
                 checkAccount() {
-                    if (this.account) {
+                    if (this.infoForm.account) {
                         this.accountInvalidStyle = {color: 'green'}
                     } else {
                         this.accountInvalidStyle = {color: '#FF3333'}
                     }
                 },
                 checkPassword() {
-                    if (this.passwordInvalidStyle) {
+                    if (this.infoForm.password) {
                         this.passwordInvalidStyle = {color: 'green'}
                     } else {
                         this.passwordInvalidStyle = {color: '#FF3333'}
                     }
                 },
                 login() {
-                    if (!this.account || !this.password) {
-                        this.show = !this.show
+                    if (!this.infoForm.account || !this.infoForm.password) {
+                        this.show = true
                         return
                     }
                     this.loginDisabled = true
                     // 这里要进行ajax请求进行验证(用户账号要唯一确认)
                     const _this = this;
-                    axios.post('/login/', {"post_type": "login", "account": _this.account, "password": _this.password})
+                    axios.post('/login/', {"post_type": "login", "account": _this.infoForm.account, "password": _this.infoForm.password})
                         .then(function (response) {
-                            const ret = response.data.ret;
-                            console.log(ret);
-                            const info = response.data.data;
+                            const ret = response.data.ret
+                            console.log(ret)
+                            const info = response.data.data
                             if (!ret){
                                 _this.loginDisabled = false
-                                window.location.href = "/";
+                                window.location.href = "/"
                             }
                             else {
                                 _this.loginDisabled = false
-                                _this.show = !this.show
+                                _this.show = false
                             }
                         })
                         .catch(function (error) {
-                            console.log(error);
-                        });
+                            console.log(error)
+                        })
                 }
             }
         })

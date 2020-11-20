@@ -4,10 +4,11 @@ import pymysql
 from pprint import pprint
 from app.login.action import LoginPostHandler
 import json
+from app.main.view import BaseHandler
 
 
 
-class LoginHandler(tornado.web.RequestHandler):
+class LoginHandler(BaseHandler):
 
     def initialize(self):
         """
@@ -39,8 +40,8 @@ class LoginHandler(tornado.web.RequestHandler):
         login_post_handler = LoginPostHandler(self)
         op_handle = login_post_handler.get_handler()
         ret_dict = op_handle()
-        print(ret_dict)
-        self.write(json.dumps(ret_dict))
+        # print(ret_dict)
+        # self.write(json.dumps(ret_dict))
 
     def put(self, *args, **kwargs):
         pass

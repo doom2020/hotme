@@ -54,6 +54,7 @@ class RegisterPostCool:
         session.add(user_info_obj)
         try:
             session.commit()
+            self.request.set_secure_cookie("user", account, 3600)
         except Exception as e:
             ret_dict['ret'] = 1
             session.rollback()

@@ -39,4 +39,6 @@ class LoginPostCool:
         except Exception as e:
             ret_dict['ret'] = 2
             return ret_dict
+        self.request.set_secure_cookie("user", account)
         return ret_dict
+        # self.request.redirect("/") # 前后端分离后端只传数据页面跳转前端处理

@@ -3,10 +3,10 @@ import tornado.web
 import pymysql
 from tornado.escape import json_decode
 from app.register.action import RegisterPostHandler
+from app.main.view import BaseHandler
 
 
-
-class RegisterHandler(tornado.web.RequestHandler):
+class RegisterHandler(BaseHandler):
     
     def initialize(self):
         """
