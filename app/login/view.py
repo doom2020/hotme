@@ -40,8 +40,8 @@ class LoginHandler(BaseHandler):
         login_post_handler = LoginPostHandler(self)
         op_handle = login_post_handler.get_handler()
         ret_dict = op_handle()
-        # print(ret_dict)
-        # self.write(json.dumps(ret_dict))
+        print(ret_dict)
+        self.write(json.dumps(ret_dict))
 
     def put(self, *args, **kwargs):
         pass

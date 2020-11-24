@@ -52,8 +52,8 @@
             el: '#loginDiv',
             delimiters: ['${', '}'],
             mounted() {
-                this.$refs['accountInput'].focus()
-                window.addEventListener('keydown', this.keyDown)
+                this.$refs['accountInput'].focus() // 进入登录页面焦点移动至account input 输入框
+                window.addEventListener('keydown', this.keyDown) // 监听键盘回车事件
             },
             data() {
                 return {
