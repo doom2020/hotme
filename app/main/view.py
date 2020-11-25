@@ -4,8 +4,22 @@ import pymysql
 from app.main.action import IndexPostHandler
 
 class BaseHandler(tornado.web.RequestHandler):
-    def get_current_user(self):
-        return self.get_secure_cookie("user")
+    # def get_current_user(self):
+    #     return self.get_secure_cookie("user")
+
+    def set_default_headers(self):
+        print("11111111111")
+        self.set_header("Access-Control-Allow-Origin", '*')
+        self.set_header("Access-Control-Allow-Headers", "*")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        self.set_header("Access-Control-Max-Age", 1000)
+        self.set_header("Content-type", "application/json")
+    
+    def options(self):
+        print("2222222222")
+        # 返回方法1
+        self.set_status(200) # 这里的状态码一定要设置200，建议
+        self.finish()
 
 class ConnectMysql(tornado.web.RequestHandler):
     """
@@ -52,6 +66,7 @@ class IndexHandler(BaseHandler):
             pass
 
     def prepare(self):
+        print(self.head)
         pass
 
     def get(self, *args, **kwargs):
@@ -80,7 +95,7 @@ class IndexHandler(BaseHandler):
 
 
 
-class ForgetPasswordHandler(tornado.web.RequestHandler):
+class ForgetPasswordHandler(BaseHandler):
 
     def initialize(self):
         """
