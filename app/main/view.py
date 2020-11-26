@@ -4,21 +4,28 @@ import pymysql
 from app.main.action import IndexPostHandler
 
 class BaseHandler(tornado.web.RequestHandler):
-    # def get_current_user(self):
-    #     return self.get_secure_cookie("user")
+
+    def get_current_user(self):
+        """
+        根据安全cookie获取登录用户
+        """
+        return self.get_secure_cookie("user")
 
     def set_default_headers(self):
-        print("11111111111")
+        """
+        跨域请求头设置,所有业务处理类都要继承BaseHandler类
+        """
         self.set_header("Access-Control-Allow-Origin", '*')
         self.set_header("Access-Control-Allow-Headers", "*")
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
-        self.set_header("Access-Control-Max-Age", 1000)
-        self.set_header("Content-type", "application/json")
+        # self.set_header("Access-Control-Max-Age", 1000)
+        # self.set_header("Content-type", "application/json")
     
     def options(self):
-        print("2222222222")
-        # 返回方法1
-        self.set_status(200) # 这里的状态码一定要设置200，建议
+        """
+        跨域非get请求，浏览器会发送一个OPTIONS请求,需要对这个请求做成功响应
+        """
+        self.set_status(204) # 这里的状态码一定要设置成功,200，201, 204等
         self.finish()
 
 class ConnectMysql(tornado.web.RequestHandler):
@@ -72,7 +79,7 @@ class IndexHandler(BaseHandler):
     def get(self, *args, **kwargs):
         print("登录首页")
         if not self.current_user:
-            self.redirect("/login/")
+            self.redirect("/login")
             return
         name = tornado.escape.xhtml_escape(self.current_user)
         self.render('base.html', user=name)
