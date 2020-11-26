@@ -11,8 +11,6 @@ class RegisterPostHandler:
 
     def get_handler(self):
         info = json.loads(self.request.request.body)
-        print('1111111111111')
-        print(info)
         post_type = info['post_type']
         register_post_cool = RegisterPostCool(self.request)
         handle = None

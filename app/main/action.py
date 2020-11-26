@@ -19,7 +19,6 @@ class IndexPostCool:
 
     def logout(self):
         ret_dict = {"ret": 0, "data": ''}
-        print("9999999999999999999999999999")
         self.request.set_secure_cookie("user", '')
-        # self.request.redirect('/login/') # 页面跳转交给前端
+        # self.request.redirect('/login') # 页面跳转交给前端
         return ret_dict

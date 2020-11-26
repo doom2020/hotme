@@ -11,8 +11,6 @@ class LoginPostHandler:
 
     def get_handler(self):
         info = json.loads(self.request.request.body)
-        print('1111111111111')
-        print(info)
         post_type = info['post_type']
         login_post_cool = LoginPostCool(self.request)
         handle = None
@@ -27,7 +25,7 @@ class LoginPostCool:
         self.info = json.loads(self.request.request.body)
 
     def login(self):
-        ret_dict = {'ret': 0, 'data': ''}
+        ret_dict = {'ret': 0, 'data': '', 'user': ''}
         account = self.info['account']
         password = self.info['password']
         if not account or not password:
@@ -40,5 +38,6 @@ class LoginPostCool:
             ret_dict['ret'] = 2
             return ret_dict
         self.request.set_secure_cookie("user", account)
+        ret_dict['user'] = account
         return ret_dict
         # self.request.redirect("/") # 前后端分离后端只传数据页面跳转前端处理
