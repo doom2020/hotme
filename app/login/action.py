@@ -6,6 +6,7 @@ from tools import md5Str
 
 
 class LoginPostHandler:
+    
     def __init__(self, request):
         self.request = request
 
