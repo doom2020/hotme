@@ -26,18 +26,18 @@ else:
 
 def make_app():
     return tornado.web.Application([
-        (r"/create_table/", CreateTableHandler),
-        (r"/delete_table/", DeleteTableHandler),
+        (r"/create_table", CreateTableHandler),
+        (r"/delete_table", DeleteTableHandler),
         (r"/", IndexHandler),
-        (r"/login/", LoginHandler),
-        (r"/register/", RegisterHandler),
-        (r"/forget_password/", ForgetPasswordHandler)
+        (r"/login", LoginHandler),
+        (r"/register", RegisterHandler),
+        (r"/forget_password", ForgetPasswordHandler)
     ],
         template_path=os.path.join(os.path.dirname(__file__), 'templates'),
         static_path=os.path.join(os.path.dirname(__file__), 'static'),
         xsrf_cookies=False,
         cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
-        login_url="/login/",
+        login_url="/login",
         debug=True,
 
     )
