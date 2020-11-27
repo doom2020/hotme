@@ -77,12 +77,14 @@ class IndexHandler(BaseHandler):
         pass
 
     def get(self, *args, **kwargs):
+        ret_dict = {"ret": 0}
         print("登录首页")
         if not self.current_user:
-            self.redirect("/login")
-            return
-        name = tornado.escape.xhtml_escape(self.current_user)
-        self.render('base.html', user=name)
+            ret_dict["ret"] = 1
+            self.write(json.dumps(ret_dict))
+        # name = tornado.escape.xhtml_escape(self.current_user)
+        ret_dict["user"] = self.current_user
+        self.write(json.dumps(ret_dict))
 
     def post(self, *args, **kwargs):
         index_post_handler = IndexPostHandler(self)

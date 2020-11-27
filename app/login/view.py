@@ -35,7 +35,13 @@ class LoginHandler(BaseHandler):
             self.json_args = None
 
     def get(self, *args, **kwargs):
-        return self.render('login.html')
+        ret_dict = {'ret': 0}
+        if not self.current_user:
+            ret_dict["ret"] = 1
+            self.write(json.dumps(ret_dict))
+        # name = tornado.escape.xhtml_escape(self.current_user)
+        ret_dict["user"] = self.current_user
+        self.write(json.dumps(ret_dict))
 
     def post(self, *args, **kwargs):
         login_post_handler = LoginPostHandler(self)
