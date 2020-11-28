@@ -25,6 +25,10 @@ else:
 
 
 def make_app():
+    settings = {
+        "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
+        "xsrf_cookies": True
+    }
     return tornado.web.Application([
         (r"/create_table", CreateTableHandler),
         (r"/delete_table", DeleteTableHandler),
@@ -39,10 +43,12 @@ def make_app():
         cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
         login_url="/login",
         debug=True,
-
+        # **settings   // 所有配置可写入settings中
     )
 
+
 if __name__ == "__main__":
+    tornado.options.parse_command_line()  # 解析命令行命令可全局修改默认设置(define)eg: python manage.py --port=3000
     app = make_app()
     app.listen(options.port)
     tornado.ioloop.IOLoop.current().start()
