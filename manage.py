@@ -4,6 +4,7 @@ import tornado.ioloop
 from tornado.options import define, options
 from app.login.view import LoginHandler
 from app.register.view import RegisterHandler
+from app.chat.view import ChatHandler
 from app.main.view import IndexHandler, CreateTableHandler, DeleteTableHandler, ForgetPasswordHandler
 
 DEBUG = True
@@ -35,7 +36,8 @@ def make_app():
         (r"/", IndexHandler),
         (r"/login", LoginHandler),
         (r"/register", RegisterHandler),
-        (r"/forget_password", ForgetPasswordHandler)
+        (r"/forget_password", ForgetPasswordHandler),
+        (r"/chat", ChatHandler)
     ],
         template_path=os.path.join(os.path.dirname(__file__), 'templates'),
         static_path=os.path.join(os.path.dirname(__file__), 'static'),
