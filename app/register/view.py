@@ -28,8 +28,8 @@ class RegisterHandler(BaseHandler):
         else:
             self.args = None
 
-    def get(self, *args, **kwargs):
-        self.render('register.html')
+    # def get(self, *args, **kwargs):
+    #     self.render('register.html')
 
     def post(self, *args, **kwargs):
         register_post_handler = RegisterPostHandler(self)

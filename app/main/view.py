@@ -15,11 +15,12 @@ class BaseHandler(tornado.web.RequestHandler):
         """
         跨域请求头设置,所有业务处理类都要继承BaseHandler类
         """
-        self.set_header("Access-Control-Allow-Origin", '*')
-        self.set_header("Access-Control-Allow-Headers", "*")
+        self.set_header("Access-Control-Allow-Origin", 'http://localhost:8080')
+        # self.set_header("Content-type", '*')
+        self.set_header("Access-Control-Allow-Headers", "Content-Type")
+        self.set_header("Access-Control-Allow-Credentials", "true")
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
         # self.set_header("Access-Control-Max-Age", 1000)
-        # self.set_header("Content-type", "application/json")
     
     def options(self):
         """
@@ -73,17 +74,16 @@ class IndexHandler(BaseHandler):
             pass
 
     def prepare(self):
-        print(self.head)
         pass
 
     def get(self, *args, **kwargs):
         ret_dict = {"ret": 0}
         print("登录首页")
+        print("当前登录用户: %s" % self.current_user)
         if not self.current_user:
             ret_dict["ret"] = 1
-            self.write(json.dumps(ret_dict))
-        # name = tornado.escape.xhtml_escape(self.current_user)
-        ret_dict["user"] = self.current_user
+        else:
+            ret_dict["user"] = tornado.escape.xhtml_escape(self.current_user)
         self.write(json.dumps(ret_dict))
 
     def post(self, *args, **kwargs):

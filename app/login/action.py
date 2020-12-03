@@ -3,6 +3,12 @@ import hashlib
 from app.common.models import *
 from utils.conn import session
 from tools import md5Str
+try:
+    from http.cookie import Morsel
+except ImportError:
+    from six.moves.http_cookies import Morsel
+
+Morsel._reserved["samesite"] = "SameSite"
 
 
 class LoginPostHandler:
@@ -38,7 +44,8 @@ class LoginPostCool:
         except Exception as e:
             ret_dict['ret'] = 2
             return ret_dict
-        self.request.set_secure_cookie("user", account)
+        self.request.set_secure_cookie("user", account, expires_days=10, samesite="None")
+        # self.request.set_secure_cookie("user", account, expires_days=10)
         ret_dict['user'] = account
+        print("post 登录成功 cookie: %s" % self.request.get_secure_cookie("user"))
         return ret_dict
-        # self.request.redirect("/") # 前后端分离后端只传数据页面跳转前端处理
