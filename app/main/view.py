@@ -78,11 +78,10 @@ class IndexHandler(BaseHandler):
 
     def get(self, *args, **kwargs):
         ret_dict = {"ret": 0}
-        print("登录首页")
-        print("当前登录用户: %s" % self.current_user)
         if not self.current_user:
             ret_dict["ret"] = 1
         else:
+            print("登录首页成功,当前登录用户: %s" % self.current_user.decode("utf-8"))
             ret_dict["user"] = tornado.escape.xhtml_escape(self.current_user)
         self.write(json.dumps(ret_dict))
 

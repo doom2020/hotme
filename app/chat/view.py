@@ -20,13 +20,15 @@ class ChatHandler(WebSocketBaseHandler):
 
     def open(self):
         # user_list = list()
-        if self.current_user:  # 当能获取到用户信息,将用户放入列表中
-            now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            user = self.current_user.encode("utf-8")
-            self.user_list.append(self)
-            print("当前连接过来的用户名: %s" % user)
-            for u in self.user_list:
-                u.write_message("[%s]欢迎: %s 进入群聊" % (now_str, user))
+        print("建立连接: %s" % self)
+        # ip = self.request.remote_ip
+        # # print("cookie: %s" % self.get_secure_cookie("user"))
+        # if ip:  # 当能获取到用户信息,将用户放入列表中
+        #     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        #     self.user_list.append(self)
+        #     print("当前连接过来的ip: %s" % ip)
+        #     for u in self.user_list:
+        #         u.write_message("[%s]欢迎: %s 进入群聊" % (now_str, ip))
 
     def on_close(self):
         print("func: on_close")
