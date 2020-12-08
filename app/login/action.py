@@ -4,13 +4,6 @@ from app.common.models import UserInfo
 from utils.conn import session
 from tools import md5Str
 
-try:
-    from http.cookie import Morsel
-except ImportError:
-    from six.moves.http_cookies import Morsel
-
-Morsel._reserved["samesite"] = "SameSite"
-
 
 class LoginPostHandler:
     
@@ -47,8 +40,7 @@ class LoginPostCool:
             print(e)
             ret_dict['ret'] = 2
             return ret_dict
-        self.request.set_secure_cookie("user", account, expires_days=10, samesite="None")
-        # self.request.set_secure_cookie("user", account, expires_days=10)
+        self.request.set_secure_cookie("user", account, expires_days=10)
+        print("post登录成功,设置的cookie: %s" % self.request.get_secure_cookie("user"))
         ret_dict['user'] = account
-        print("post 登录成功 cookie: %s" % self.request.get_secure_cookie("user"))
         return ret_dict

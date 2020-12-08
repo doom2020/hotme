@@ -23,13 +23,10 @@ class RegisterHandler(BaseHandler):
             print("连接数据库成功")
 
     def prepare(self):
-        if self.request.headers.get('Content-Type', '').startswith("application/json"):
-            self.args = json_decode(self.request.body)
-        else:
-            self.args = None
+        pass
 
-    # def get(self, *args, **kwargs):
-    #     self.render('register.html')
+    def get(self, *args, **kwargs):
+        pass
 
     def post(self, *args, **kwargs):
         register_post_handler = RegisterPostHandler(self)

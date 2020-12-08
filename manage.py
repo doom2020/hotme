@@ -5,7 +5,7 @@ from tornado.options import define, options
 from app.login.view import LoginHandler
 from app.register.view import RegisterHandler
 from app.chat.view import ChatHandler
-from app.main.view import IndexHandler, CreateTableHandler, DeleteTableHandler, ForgetPasswordHandler
+from app.main.view import IndexHandler, CreateTableHandler, DeleteTableHandler, ForgetPasswordHandler, LogoutHandler
 
 DEBUG = True
 
@@ -35,6 +35,7 @@ def make_app():
         (r"/delete_table", DeleteTableHandler),
         (r"/", IndexHandler),
         (r"/login", LoginHandler),
+        (r"/logout", LogoutHandler),
         (r"/register", RegisterHandler),
         (r"/forget_password", ForgetPasswordHandler),
         (r"/chat", ChatHandler)

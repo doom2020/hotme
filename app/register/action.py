@@ -3,12 +3,6 @@ from app.common.models import *
 import hashlib
 from utils.conn import session
 from tools import md5Str
-try:
-    from http.cookie import Morsel
-except ImportError:
-    from six.moves.http_cookies import Morsel
-
-Morsel._reserved["samesite"] = "SameSite"
 
 
 class RegisterPostHandler:
@@ -58,9 +52,8 @@ class RegisterPostCool:
         session.add(user_info_obj)
         try:
             session.commit()
-            self.request.set_secure_cookie("user", account, expires_days=10, samesite="None")
-            # self.request.set_secure_cookie("user", account, 3600)
-            print("注册成功 cookie: %s" % self.request.get_secure_cookie("user"))
+            self.request.set_secure_cookie("user", account, expires_days=10)  # 这里可以看看源码设置好cookie是否有返回值
+            print("注册成功,设置的cookie: %s" % self.request.get_secure_cookie("user"))
             ret_dict["user"] = account
         except Exception as e:
             ret_dict['ret'] = 1

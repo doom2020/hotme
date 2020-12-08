@@ -5,39 +5,32 @@ from app.main.view import BaseHandler
 
 
 class WebSocketBaseHandler(tornado.websocket.WebSocketHandler):
+
     def check_origin(self, origin):
+        """
+        跨域请求处理
+        """
         return True
 
 
 class ChatHandler(WebSocketBaseHandler):
-    user_list = list()
-    def initialize(self):
-        print("func: initialize")
-        pass
-    
-    # def prepare(self, *args, **kwargs):
-    #     print("func: prepare")
-    #     pass
-
+    client_list = []
     def open(self):
-        # user_list = list()
-        print("建立连接: %s" % self)
-        # ip = self.request.remote_ip
-        # # print("cookie: %s" % self.get_secure_cookie("user"))
-        # if ip:  # 当能获取到用户信息,将用户放入列表中
-        #     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        #     self.user_list.append(self)
-        #     print("当前连接过来的ip: %s" % ip)
-        #     for u in self.user_list:
-        #         u.write_message("[%s]欢迎: %s 进入群聊" % (now_str, ip))
+        now_str_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print("[%s]建立连接: %s" % (now_str_time, self))
+        self.client_list.append(self)
+        for c in self.client_list:
+            c.write_message("[%s]系统消息: %s 进入群聊" % (now_str_time, self))
 
     def on_close(self):
-        print("func: on_close")
+        now_str_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print("[%s]断开连接: %s" % (now_str_time, self))
+        self.client_list.remove(self)
+        for c in self.client_list:
+            c.write_message("[%s]系统消息: %s 离开群聊" % (now_str_time, self))
 
     def on_message(self, message):
-        print("收到客户端消息: %s" % message)
-        if self.current_user:
-            now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            user = self.current_user.encode("utf-8")
-            for u in self.user_list:
-                u.write_message("[%s] %s: %s" % (now_str, user, message))
+        now_str_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print("[%s]收到客户端: %s 消息: %s" % (now_str_time, self, message))
+        for c in self.client_list:
+            c.write_message("[%s] %s说: %s" % (now_str, self, message))

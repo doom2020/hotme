@@ -15,16 +15,14 @@ class LoginHandler(BaseHandler):
         当使用原生sql
         :return:
         """
-        # self.conn, self.cursor = None, None
-        # try:
-        #     self.conn = pymysql.connect(host='127.0.0.1', password='123456', database='hotme', user='root', port=3306)
-        #     self.cursor = self.conn.cursor()
-        # except Exception as e:
-        #     pprint("连接数据库异常: %s" % e)
-        # else:
-        #     pprint("连接数据库成功")
-        # pprint("<initialize>方法")
-        pass
+        self.conn, self.cursor = None, None
+        try:
+            self.conn = pymysql.connect(host='127.0.0.1', password='123456', database='hotme', user='root', port=3306)
+            self.cursor = self.conn.cursor()
+        except Exception as e:
+            pprint("连接数据库异常: %s" % e)
+        else:
+            pprint("连接数据库成功")
 
     def prepare(self):
         # 这里获取一下请求的信息
@@ -56,6 +54,5 @@ class LoginHandler(BaseHandler):
         pass
 
     def on_finish(self):
-        print(self.get_secure_cookie("user"))
-        # if self.conn:
-        #     self.conn.close()
+        if self.conn:
+            self.conn.close()
