@@ -1,8 +1,9 @@
-import json
 import hashlib
-from app.common.models import *
+import json
+from app.common.models import UserInfo
 from utils.conn import session
 from tools import md5Str
+
 try:
     from http.cookie import Morsel
 except ImportError:
@@ -41,7 +42,9 @@ class LoginPostCool:
         secret_pwd = md5Str(password)
         try:
             user_info_obj = session.query(UserInfo).filter(UserInfo.name == account, UserInfo.password == secret_pwd, UserInfo.is_delete == 0).one()
+            print(user_info_obj)
         except Exception as e:
+            print(e)
             ret_dict['ret'] = 2
             return ret_dict
         self.request.set_secure_cookie("user", account, expires_days=10, samesite="None")

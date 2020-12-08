@@ -1,6 +1,7 @@
-from app.main.view import BaseHandler
 import tornado.websocket
 from datetime import datetime
+from app.main.view import BaseHandler
+
 
 
 class WebSocketBaseHandler(tornado.websocket.WebSocketHandler):

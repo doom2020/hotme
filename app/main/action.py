@@ -17,7 +17,14 @@ class IndexPostCool:
     def __init__(self, request):
         self.request = request
 
-    def logout(self):
+    def func1(self):
         ret_dict = {"ret": 0, "data": ''}
-        self.request.clear_all_cookies()
+        return ret_dict
+
+    def func2(self):
+        ret_dict = {"ret": 0, "data": ''}
+        return ret_dict
+
+    def func3(self):
+        ret_dict = {"ret": 0, "data": ''}
         return ret_dict

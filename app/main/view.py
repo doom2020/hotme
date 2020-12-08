@@ -2,6 +2,7 @@ import json
 import tornado.web
 import pymysql
 from app.main.action import IndexPostHandler
+from utils.conn import Base
 
 class BaseHandler(tornado.web.RequestHandler):
 
@@ -30,9 +31,6 @@ class BaseHandler(tornado.web.RequestHandler):
         self.finish()
 
 class ConnectMysql(tornado.web.RequestHandler):
-    """
-    基类
-    """
     def initialize(self):
         """
         当使用原生sql
@@ -101,7 +99,35 @@ class IndexHandler(BaseHandler):
         if self.conn:
             self.conn.close()
 
+class LogoutHandler(BaseHandler):
+    def initialize(self):
+        """
+        当使用原生sql
+        :return:
+        """
+        self.conn, self.cursor = None, None
+        try:
+            self.conn = pymysql.connect(host='127.0.0.1', password='123456', database='hotme', user='root', port=3306)
+            self.cursor = self.conn.cursor()
+        except Exception as e:
+            print(e)
+        else:
+            pass
 
+    def prepare(self):
+        pass
+
+    def get(self, *args, **kwargs):
+        ret_dict = {"ret": 0}
+        self.clear_all_cookies()
+        return ret_dict
+
+    def post(self, *args, **kwargs):
+        pass
+
+    def on_finish(self):
+        if self.conn:
+            self.conn.close()
 
 class ForgetPasswordHandler(BaseHandler):
 
@@ -123,10 +149,10 @@ class ForgetPasswordHandler(BaseHandler):
         pass
 
     def get(self, *args, **kwargs):
-        self.render('forget_password.html')
+        pass
 
     def post(self, *args, **kwargs):
-        self.write('忘记密码请求')
+        pass
 
     def on_finish(self):
         if self.conn:
