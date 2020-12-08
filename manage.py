@@ -38,7 +38,8 @@ def make_app():
         (r"/logout", LogoutHandler),
         (r"/register", RegisterHandler),
         (r"/forget_password", ForgetPasswordHandler),
-        (r"/chat", ChatHandler)
+        (r"/chat", ChatHandler),
+        (r"/query", QueryHandler)
     ],
         template_path=os.path.join(os.path.dirname(__file__), 'templates'),
         static_path=os.path.join(os.path.dirname(__file__), 'static'),
