@@ -6,6 +6,7 @@ from app.login.view import LoginHandler
 from app.register.view import RegisterHandler
 from app.chat.view import ChatHandler
 from app.main.view import IndexHandler, CreateTableHandler, DeleteTableHandler, ForgetPasswordHandler, LogoutHandler
+from app.query.view import QueryHandler
 
 DEBUG = True
 

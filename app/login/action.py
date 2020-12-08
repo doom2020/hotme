@@ -40,7 +40,10 @@ class LoginPostCool:
             print(e)
             ret_dict['ret'] = 2
             return ret_dict
-        self.request.set_secure_cookie("user", account, expires_days=10)
-        print("post登录成功,设置的cookie: %s" % self.request.get_secure_cookie("user"))
+        result = self.request.set_secure_cookie("user", account, expires_days=10)
+        if result:
+            print("post登录成功,设置的cookie: %s" % self.request.get_secure_cookie("user"))
+        else:
+            print("post登录成功,设置cookie失败")
         ret_dict['user'] = account
         return ret_dict

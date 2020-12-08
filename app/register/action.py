@@ -52,8 +52,11 @@ class RegisterPostCool:
         session.add(user_info_obj)
         try:
             session.commit()
-            self.request.set_secure_cookie("user", account, expires_days=10)  # 这里可以看看源码设置好cookie是否有返回值
-            print("注册成功,设置的cookie: %s" % self.request.get_secure_cookie("user"))
+            result = self.request.set_secure_cookie("user", account, expires_days=10)  # 这里可以看看源码设置好cookie是否有返回值
+            if result:
+                print("注册成功,设置的cookie: %s" % self.request.get_secure_cookie("user"))
+            else:
+                print("注册成功,设置cookie失败")
             ret_dict["user"] = account
         except Exception as e:
             ret_dict['ret'] = 1
